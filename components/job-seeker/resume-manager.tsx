@@ -36,7 +36,8 @@ export function ResumeManager({ resumes, onSuccess }: ResumeManagerProps) {
 
     try {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file_path", file);
+      console.log("Uploading file:", file.name); 
 
       await JobSeekerService.uploadResume(formData);
       onSuccess?.();
@@ -44,6 +45,7 @@ export function ResumeManager({ resumes, onSuccess }: ResumeManagerProps) {
         fileInputRef.current.value = "";
       }
     } catch (err) {
+      console.error("Upload error:", err);
       setError(err instanceof Error ? err.message : "Failed to upload resume");
     } finally {
       setLoading(false);
@@ -64,7 +66,7 @@ export function ResumeManager({ resumes, onSuccess }: ResumeManagerProps) {
       <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary transition">
         <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
         <p className="font-medium mb-2">Upload Your Resume</p>
-        <p className="text-sm text-muted mb-4">PDF format only, max 5MB</p>
+        <p className="text-sm text-muted-foreground mb-4">PDF format only, max 5MB</p>
         <Button
           type="button"
           variant="outline"

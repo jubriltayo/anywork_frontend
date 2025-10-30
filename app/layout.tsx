@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AuthProvider } from "@/lib/contexts/auth-context";
-// import { ThemeProvider } from "@/components/providers/theme-provider";
+import { NotificationProvider } from "@/lib/contexts/notification-context";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -16,8 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "AnyWork - Job Marketplace",
-  description:
-    "Connect with opportunities. Find your next role or hire top talent.",
+  description: "Connect with opportunities. Find your next role or hire top talent.",
 };
 
 export default function RootLayout({
@@ -27,12 +26,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {/* <ThemeProvider attribute="class" defaultTheme="system" enableSystem> */}
-          <AuthProvider>{children}</AuthProvider>
-        {/* </ThemeProvider> */}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <AuthProvider>
+          <NotificationProvider>
+            {children}
+          </NotificationProvider>
+        </AuthProvider>
       </body>
     </html>
   );

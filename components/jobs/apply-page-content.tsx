@@ -91,7 +91,9 @@ export function ApplyPageContent() {
           </Link>
 
           <h1 className="text-4xl font-bold mb-2">Apply for {job.title}</h1>
-          <p className="text-muted mb-8">Complete your application below</p>
+          <p className="text-muted-foreground mb-8">
+            Complete your application below
+          </p>
 
           <ApplyForm job={job} resumes={resumes} onSubmit={handleSuccess} />
         </div>

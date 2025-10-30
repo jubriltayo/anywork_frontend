@@ -20,11 +20,11 @@ export function EmployerApplicationsPageContent() {
     if (!requireAuth()) return;
 
     try {
-      const res = await EmployerService.getJobs();
-      setJobs(res.results);
-      if (res.results.length > 0) {
-        setSelectedJob(res.results[0].job_id);
-        loadApplications(res.results[0].job_id);
+      const jobsData = await EmployerService.getJobs();
+      setJobs(jobsData);
+      if (jobsData.length > 0) {
+        setSelectedJob(jobsData[0].job_id);
+        loadApplications(jobsData[0].job_id);
       }
     } catch (err) {
       console.error("Failed to load jobs:", err);
@@ -48,7 +48,7 @@ export function EmployerApplicationsPageContent() {
 
   const handleStatusChange = async (
     appId: string,
-    status: "accepted" | "rejected"
+    status: "pending" | "reviewed" | "rejected" | "accepted"
   ) => {
     try {
       await EmployerService.updateApplicationStatus(appId, status);
@@ -59,7 +59,7 @@ export function EmployerApplicationsPageContent() {
       console.error("Failed to update status:", err);
     }
   };
-
+  
   if (loading) {
     return (
       <>

@@ -104,8 +104,16 @@ export interface Job {
   expires_at: string;
   is_active: boolean;
   employer: string;
-  location: string;
-  category: string;
+  location: string | Location;
+  category: string | Location;
+
+  location_details?: Location;
+  category_details?: Category;
+  employer_details?: {
+    company_name: string;
+    company_description?: string;
+    website?: string;
+  };
 }
 
 export interface JobFormData {
@@ -136,8 +144,24 @@ export interface Application {
   status: "pending" | "reviewed" | "rejected" | "accepted";
   applied_at: string;
   job_seeker: string;
-  job: string;
+  job: string | Job;
   resume: string;
+
+  job_seeker_details?: {
+    first_name: string;
+    last_name: string;
+    full_name: string;
+    phone_number?: string;
+    email: string;
+  };
+  resume_details?: {
+    resume_id: string;
+    file_url: string;
+    file_name: string;
+    uploaded_at: string;
+  };
+
+  job_details?: Job;
 }
 
 export interface ApplicationFormData {
