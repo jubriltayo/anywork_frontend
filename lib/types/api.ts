@@ -105,7 +105,7 @@ export interface Job {
   is_active: boolean;
   employer: string;
   location: string | Location;
-  category: string | Location;
+  category: string | Category;
 
   location_details?: Location;
   category_details?: Category;

@@ -13,11 +13,31 @@ interface JobFormProps {
 }
 
 export function JobForm({ job, onSuccess }: JobFormProps) {
+  const getLocationId = (job?: Job): string => {
+    if (!job?.location) return "";
+
+    if (typeof job.location === "string") {
+      return job.location;
+    }
+
+    return (job.location as Location).location_id || "";
+  };
+
+  const getCategoryId = (job?: Job): string => {
+    if (!job?.category) return "";
+
+    if (typeof job.category === "string") {
+      return job.category;
+    }
+
+    return (job.category as Category).category_id || "";
+  };
+
   const [formData, setFormData] = useState<JobFormData>({
     title: job?.title || "",
     description: job?.description || "",
-    location: job?.location || "",
-    category: job?.category || "",
+    location: getLocationId(job),
+    category: getCategoryId(job),
     salary_range: job?.salary_range || "",
     job_type: job?.job_type || "full-time",
     expires_at: job?.expires_at?.split("T")[0] || "",
@@ -32,6 +52,20 @@ export function JobForm({ job, onSuccess }: JobFormProps) {
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    if (job) {
+      setFormData({
+        title: job.title || "",
+        description: job.description || "",
+        location: getLocationId(job),
+        category: getCategoryId(job),
+        salary_range: job.salary_range || "",
+        job_type: job.job_type || "full-time",
+        expires_at: job.expires_at?.split("T")[0] || "",
+      });
+    }
+  }, [job]);
 
   const loadData = async () => {
     try {
