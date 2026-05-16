@@ -16,34 +16,36 @@ export function AuthGuard({
   redirectTo = "/login",
 }: AuthGuardProps) {
   const router = useRouter();
+  const isAuthenticated = AuthService.isAuthenticated();
 
   useEffect(() => {
-    const isAuthenticated = AuthService.isAuthenticated();
-
     if (requireAuth && !isAuthenticated) {
       router.push(redirectTo);
-      return;
     }
-
     if (!requireAuth && isAuthenticated) {
       router.push("/dashboard");
-      return;
     }
-  }, [requireAuth, redirectTo, router]);
+  }, [requireAuth, isAuthenticated, redirectTo, router]);
 
-  // Show loading state or nothing while checking auth
-  if (requireAuth && !AuthService.isAuthenticated()) {
+  // Blocking states
+  if (requireAuth && !isAuthenticated) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted">Loading...</p>
+      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-8 h-8 rounded-full border-2 border-[#e8ff47]/30 border-t-[#e8ff47] animate-spin" />
+          <p className="text-white/30 text-sm">Redirecting…</p>
+        </div>
       </div>
     );
   }
 
-  if (!requireAuth && AuthService.isAuthenticated()) {
+  if (!requireAuth && isAuthenticated) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted">Redirecting...</p>
+      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-8 h-8 rounded-full border-2 border-[#e8ff47]/30 border-t-[#e8ff47] animate-spin" />
+          <p className="text-white/30 text-sm">Redirecting to dashboard…</p>
+        </div>
       </div>
     );
   }

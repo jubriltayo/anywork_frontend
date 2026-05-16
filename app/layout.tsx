@@ -1,22 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Syne, DM_Sans } from "next/font/google";
 import { AuthProvider } from "@/lib/contexts/auth-context";
 import { NotificationProvider } from "@/lib/contexts/notification-context";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const syne = Syne({
   subsets: ["latin"],
+  variable: "--font-syne",
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const dmSans = DM_Sans({
   subsets: ["latin"],
+  variable: "--font-dm-sans",
+  weight: ["300", "400", "500", "600"],
 });
 
 export const metadata: Metadata = {
-  title: "AnyWork - Job Marketplace",
-  description: "Connect with opportunities. Find your next role or hire top talent.",
+  title: "AnyWork — Hire Faster. Search Smarter.",
+  description: "The job board built for employers who move fast and candidates who mean business.",
 };
 
 export default function RootLayout({
@@ -26,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${syne.variable} ${dmSans.variable} font-sans antialiased bg-[#0a0a0f] text-white`}>
         <AuthProvider>
           <NotificationProvider>
             {children}

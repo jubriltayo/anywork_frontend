@@ -1,6 +1,28 @@
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
 
+function extractErrorMessage(data: unknown, status: number): string {
+  if (!data) return `Something went wrong (${status})`;
+
+  if (Array.isArray(data)) {
+    return data.filter((d) => typeof d === "string").join(" ") || `Error ${status}`;
+  }
+
+  if (typeof data === "object" && data !== null) {
+    const obj = data as Record<string, unknown>;
+    if (typeof obj.detail === "string") return obj.detail;
+    if (typeof obj.message === "string") return obj.message;
+    const firstKey = Object.keys(obj)[0];
+    if (firstKey) {
+      const val = obj[firstKey];
+      if (Array.isArray(val) && typeof val[0] === "string") return val[0];
+      if (typeof val === "string") return val;
+    }
+  }
+
+  return `Something went wrong (${status})`;
+}
+
 class ApiClient {
   private getAuthToken(): string | null {
     if (typeof window !== "undefined") {
@@ -39,7 +61,7 @@ class ApiClient {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
-      throw new Error(errorData?.message || `API error: ${response.status}`);
+      throw new Error(extractErrorMessage(errorData, response.status));
     }
 
     if (response.status === 204) {

@@ -6,11 +6,11 @@ import { useAuth } from "@/lib/hooks/use-auth";
 import { JobSeekerService } from "@/lib/services/job-seeker";
 import { EmployerService } from "@/lib/services/employer";
 import type { JobSeeker, Employer } from "@/lib/types/api";
-import Link from "next/link";
-import { BarChart3 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { JobSeekerDashboardContent } from "@/components/job-seeker/job-seeker-dashboard-content";
 import { EmployerDashboardContent } from "@/components/employer/employer-dashboard-content";
+import { JobSeekerDashboardContent } from "@/components/job-seeker/job-seeker-dashboard-content";
+import { BarChart3 } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export function DashboardContent() {
   const { user, requireAuth } = useAuth();
@@ -19,7 +19,6 @@ export function DashboardContent() {
 
   const loadDashboardData = useCallback(async () => {
     if (!user) return;
-
     try {
       if (user.role === "job_seeker") {
         const profileRes = await JobSeekerService.getProfile(user.user_id);
@@ -44,65 +43,37 @@ export function DashboardContent() {
     return (
       <>
         <Navbar />
-        <div className="min-h-screen bg-background flex items-center justify-center">
-          <p className="text-muted">Loading...</p>
+        <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-8 h-8 rounded-full border-2 border-[#e8ff47]/30 border-t-[#e8ff47] animate-spin" />
+            <p className="text-white/30 text-sm">Loading…</p>
+          </div>
         </div>
       </>
     );
   }
 
-  const isJobSeeker = user?.role === "job_seeker";
-  const isEmployer = user?.role === "employer";
-
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-background py-12">
-        <div className="container-main max-w-6xl">
-          {/* Welcome Section */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-2">
-              Welcome back
-              {isJobSeeker && profile
-                ? `, ${(profile as JobSeeker).first_name}`
-                : ""}
-              {isEmployer && profile
-                ? `, ${(profile as Employer).company_name}`
-                : ""}
-              !
-            </h1>
-            <p className="text-muted-foreground text-lg">
-              {isJobSeeker
-                ? "Ready to find your next opportunity?"
-                : "Manage your job postings and applicants."}
-            </p>
-          </div>
-
-          {/* Role-specific Dashboard */}
-          {isJobSeeker && <JobSeekerDashboardContent />}
-
-          {isEmployer && <EmployerDashboardContent />}
-
-          {/* Admin dashboard can be added here if needed */}
-          {user?.role === "admin" && <AdminDashboard />}
+      <main className="min-h-screen bg-[#0a0a0f] pt-24 pb-20 px-6">
+        <div className="max-w-7xl mx-auto">
+          {user?.role === "job_seeker" && <JobSeekerDashboardContent />}
+          {user?.role === "employer" && <EmployerDashboardContent />}
+          {user?.role === "admin" && (
+            <div className="flex flex-col items-center justify-center min-h-[50vh] text-center">
+              <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-4">
+                <BarChart3 className="w-8 h-8 text-white/20" />
+              </div>
+              <h2 className="text-white text-2xl font-black font-display mb-2">Admin Dashboard</h2>
+              <p className="text-white/40 mb-6">Administrative features coming soon.</p>
+              <Button asChild>
+                <Link href="/admin">Go to Admin Panel</Link>
+              </Button>
+            </div>
+          )}
         </div>
       </main>
     </>
-  );
-}
-
-// Admin Dashboard Component (placeholder)
-function AdminDashboard() {
-  return (
-    <div className="card text-center py-12">
-      <BarChart3 className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
-      <h2 className="text-2xl font-bold mb-2">Admin Dashboard</h2>
-      <p className="text-muted-foreground mb-6">
-        Administrative features and system analytics will be available here.
-      </p>
-      <Button asChild>
-        <Link href="/admin">Go to Admin Panel</Link>
-      </Button>
-    </div>
   );
 }

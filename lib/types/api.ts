@@ -71,23 +71,12 @@ export interface EmployerFormData {
 export interface Category {
   category_id: string;
   name: string;
-  description: string;
-}
-
-export interface CategoryFormData {
-  name: string;
-  description?: string;
+  description?: string | null;
 }
 
 // Location Types
-export interface Location {
+export interface JobLocation {
   location_id: string;
-  city: string;
-  state: string;
-  country: string;
-}
-
-export interface LocationFormData {
   city: string;
   state: string;
   country: string;
@@ -98,22 +87,15 @@ export interface Job {
   job_id: string;
   title: string;
   description: string;
-  salary_range?: string;
+  salary_range?: string | null;
   job_type: "full-time" | "part-time" | "remote";
   posted_at: string;
   expires_at: string;
   is_active: boolean;
   employer: string;
-  location: string | Location;
-  category: string | Category;
 
-  location_details?: Location;
-  category_details?: Category;
-  employer_details?: {
-    company_name: string;
-    company_description?: string;
-    website?: string;
-  };
+  location: JobLocation;
+  category: Category;
 }
 
 export interface JobFormData {

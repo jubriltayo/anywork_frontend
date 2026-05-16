@@ -59,9 +59,9 @@ export class NotificationService {
 
   static async markAsRead(notificationId: string): Promise<Notification> {
     try {
-      const notification = await apiClient.patch<Notification>(
-        `/notifications/${notificationId}/`,
-        { is_read: true }
+      const notification = await apiClient.post<Notification>(
+        `/notifications/${notificationId}/mark-as-read/`,
+        {}
       );
 
       if (notification) {

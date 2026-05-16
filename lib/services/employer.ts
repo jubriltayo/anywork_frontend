@@ -5,7 +5,7 @@ import type {
   EmployerFormData,
   Job,
   Category,
-  Location,
+  JobLocation,
   Application,
   JobFormData,
   JobUpdateData,
@@ -83,9 +83,9 @@ export class EmployerService {
   }
 
   // Locations
-  static async getLocations(): Promise<PaginatedResponse<Location>> {
+  static async getLocations(): Promise<PaginatedResponse<JobLocation>> {
     try {
-      return await apiClient.get<PaginatedResponse<Location>>("/locations/");
+      return await apiClient.get<PaginatedResponse<JobLocation>>("/locations/");
     } catch (error) {
       throw new Error(
         error instanceof Error ? error.message : "Failed to fetch locations"
@@ -97,9 +97,9 @@ export class EmployerService {
     city: string;
     state: string;
     country: string;
-  }): Promise<Location> {
+  }): Promise<JobLocation> {
     try {
-      const location = await apiClient.post<Location>("/locations/", data);
+      const location = await apiClient.post<JobLocation>("/locations/", data);
 
       if (location) {
         return location;
