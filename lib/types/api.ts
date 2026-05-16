@@ -101,8 +101,8 @@ export interface Job {
 export interface JobFormData {
   title: string;
   description: string;
-  location: string;
-  category: string;
+  location_id: string;
+  category_id: string;
   salary_range?: string;
   job_type: "full-time" | "part-time" | "remote";
   expires_at: string;

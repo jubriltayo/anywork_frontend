@@ -54,16 +54,18 @@ export class EmployerService {
   }
 
   // Categories
-  static async getCategories(): Promise<PaginatedResponse<Category>> {
+  static async getCategories(): Promise<Category[]> {
     try {
-      return await apiClient.get<PaginatedResponse<Category>>("/categories/");
+      const response =
+        await apiClient.get<PaginatedResponse<Category>>("/categories/");
+
+      return response.results ?? [];
     } catch (error) {
       throw new Error(
         error instanceof Error ? error.message : "Failed to fetch categories"
       );
     }
   }
-
   static async createCategory(data: {
     name: string;
     description?: string;
@@ -83,9 +85,12 @@ export class EmployerService {
   }
 
   // Locations
-  static async getLocations(): Promise<PaginatedResponse<JobLocation>> {
+  static async getLocations(): Promise<JobLocation[]> {
     try {
-      return await apiClient.get<PaginatedResponse<JobLocation>>("/locations/");
+      const response =
+        await apiClient.get<PaginatedResponse<JobLocation>>("/locations/");
+
+      return response.results ?? [];
     } catch (error) {
       throw new Error(
         error instanceof Error ? error.message : "Failed to fetch locations"

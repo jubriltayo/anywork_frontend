@@ -31,8 +31,8 @@ export function JobForm({ job, onSuccess }: JobFormProps) {
   const [formData, setFormData] = useState<JobFormData>({
     title: job?.title ?? "",
     description: job?.description ?? "",
-    location: getLocationId(job),
-    category: getCategoryId(job),
+    location_id: getLocationId(job),
+    category_id: getCategoryId(job),
     salary_range: job?.salary_range ?? "",
     job_type: job?.job_type ?? "full-time",
     expires_at: job?.expires_at?.split("T")[0] ?? "",
@@ -51,8 +51,8 @@ export function JobForm({ job, onSuccess }: JobFormProps) {
           EmployerService.getCategories(),
           EmployerService.getLocations(),
         ]);
-        setCategories(cats.results);
-        setLocations(locs.results);
+        setCategories(cats);
+        setLocations(locs);
       } catch (err) {
         console.error("Failed to load form data:", err);
       }
@@ -64,8 +64,8 @@ export function JobForm({ job, onSuccess }: JobFormProps) {
       setFormData({
         title: job.title ?? "",
         description: job.description ?? "",
-        location: getLocationId(job),
-        category: getCategoryId(job),
+        location_id: getLocationId(job),
+        category_id: getCategoryId(job),
         salary_range: job.salary_range ?? "",
         job_type: job.job_type ?? "full-time",
         expires_at: job.expires_at?.split("T")[0] ?? "",
@@ -130,8 +130,8 @@ export function JobForm({ job, onSuccess }: JobFormProps) {
         <div>
           <label className={labelClass}>Category</label>
           <select
-            name="category"
-            value={formData.category}
+            name="category_id"
+            value={formData.category_id}
             onChange={handleChange}
             required
             className={selectClass}
@@ -146,8 +146,8 @@ export function JobForm({ job, onSuccess }: JobFormProps) {
         <div>
           <label className={labelClass}>Location</label>
           <select
-            name="location"
-            value={formData.location}
+            name="location_id"
+            value={formData.location_id}
             onChange={handleChange}
             required
             className={selectClass}
